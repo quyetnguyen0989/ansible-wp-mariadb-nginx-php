@@ -1,0 +1,8 @@
+- hosts: all
+  gather_facts: False
+  pre_tasks:
+    - name: Install python for Ansible
+      raw: sudo apt-get -qq -y update && sudo apt-get install -q -y python-minimal python-dev python-simplejson lsb-release
+      changed_when: False
+    - name: gather facts for next task
+      setup:  %    

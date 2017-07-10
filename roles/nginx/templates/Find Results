@@ -1,0 +1,52 @@
+Searching 69 files for "opt"
+
+/home/wiley/trobz/ansible-v1/roles/nginx/templates/default.conf:
+    2          listen       80 default_server;
+    3          server_name  {{ server_hostname }};
+    4:         root /opt/wordpress/ ;
+    5   
+    6  	client_max_body_size 64M;
+
+/home/wiley/trobz/ansible-v1/roles/php-fpm/templates/wordpress.conf:
+   12  pm.max_spare_servers = 3
+   13  pm.max_requests = 500
+   14: chdir = /opt/wordpress/
+   15: #php_admin_value[open_basedir] = /opt/wordpress/:/tmp
+   16  php_admin_value[open_basedir] = /opt/wordpress/:/tmp
+
+/home/wiley/trobz/ansible-v1/temp/Ansible-Wordpress-Nginx/roles/nginx/templates/default.conf:
+    2          listen       80 default_server;
+    3          server_name  {{ server_hostname }};
+    4:         root /opt/wordpress/ ;
+    5   
+    6  	client_max_body_size 64M;
+
+/home/wiley/trobz/ansible-v1/temp/Ansible-Wordpress-Nginx/roles/php-fpm/templates/wordpress.conf:
+   12  pm.max_spare_servers = 3
+   13  pm.max_requests = 500
+   14: chdir = /opt/wordpress/
+   15: php_admin_value[open_basedir] = /opt/wordpress/:/tmp
+   16  
+
+/home/wiley/trobz/ansible-v1/temp/Ansible-Wordpress-Nginx/roles/wordpress/tasks/main.yml:
+    1  ---
+    2  - name: Download WordPress
+    3:   get_url: url=http://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest=/opt/wordpress-{{ wp_version }}.tar.gz
+    4             sha256sum="{{ wp_sha256sum }}"
+    5  
+    6  - name: Extract archive
+    7:   command: chdir=/opt/ /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates=/opt/wordpress
+    8  
+    9  - name: Create WordPress database
+   ..
+   16  
+   17  - name: Copy WordPress config file
+   18:   template: src=wp-config.php dest=/opt/wordpress/
+   19    become: true
+   20  
+   21  - name: Change ownership of WordPress installation
+   22:   file: path=/opt/wordpress/ owner=www-data group=www-data state=directory recurse=yes
+   23  
+   24  - name: Restart nginx
+
+11 matches across 5 files

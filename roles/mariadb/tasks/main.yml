@@ -1,0 +1,26 @@
+---
+- name: Install MariaDB package key
+  apt_key: keyserver=keyserver.ubuntu.com id=0xcbcb082a1bb943db
+ # apt_key: keyserver=keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
+
+- name: Add MariaDB source 
+ # apt_repository: repo='deb [arch=amd64,i386,ppc64el] http://mirror.klaus-uwe.me/mariadb/repo/10.1/ubuntu trusty main' state=present
+  apt_repository: repo='deb http://mirror.jmu.edu/pub/mariadb/repo/5.5/ubuntu trusty main' state=present
+  
+- name: Install MariaDB package
+  apt: name={{item}} state=latest
+  with_items:
+   - mariadb-server
+   - python-mysqldb
+
+
+#- name: Install Mysql package
+#  apt: name={{ item }} state=present
+  
+- name: Create Mysql configuration file
+  template: src=my.cnf.j2 dest=/etc/my.cnf
+  notify:
+  - restart mysql
+
+- name: Start Mysql Service
+  service: name=mysql state=started enabled=yes

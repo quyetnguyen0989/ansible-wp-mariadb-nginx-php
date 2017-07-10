@@ -1,0 +1,18 @@
+---
+- name: Install nginx
+  apt: name=nginx state=latest
+
+#- name: Delete sites-avaiable
+- file: dest=/etc/nginx/sites-available/default state=absent
+
+#- name: Delete sites enabled
+- file: dest=/etc/nginx/sites-enabled/default state=absent
+
+- name: Copy nginx configuration for wordpress
+  template: src=default.conf dest=/etc/nginx/sites-available/default.conf 
+  notify: restart nginx
+
+
+- file: src=/etc/nginx/sites-available/default.conf dest=/etc/nginx/sites-enabled/default.conf state=link
+  
+

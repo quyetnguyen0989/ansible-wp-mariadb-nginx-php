@@ -1,0 +1,21 @@
+---
+- name: Install WordPress, Mariadb, and PHP-FPM
+  hosts: wordpress
+  remote_user: wiley
+  # remote_user: user
+  # become: yes
+  become_method: sudo
+
+  roles:
+    - common
+    - mariadb
+    - nginx
+    - php-fpm
+    - wordpress
+
+  tasks: 
+    - name: add a string to the file hosts
+      lineinfile: dest=/etc/hosts
+                regexp='^'
+                line='127.0.0.1        www.quyet.local'
+                state=present

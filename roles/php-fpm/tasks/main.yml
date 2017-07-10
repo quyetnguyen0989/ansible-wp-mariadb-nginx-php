@@ -1,0 +1,17 @@
+---
+- shell: echo $LANG
+  environment:
+   LANG: "en_US.UTF-8"
+
+- name: 'Add php7 ppa'
+  apt_repository: repo='ppa:ondrej/php' state=present
+
+- name: 'Update APT'
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: Install php-fpm and deps
+  apt: name={{ item }} state=present update_cache=yes
+  with_items:
+    - php7.0
+    - php7.0-fpm
+    - php7.0-mysql

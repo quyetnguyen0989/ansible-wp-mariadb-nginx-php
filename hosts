@@ -1,0 +1,2 @@
+[Nginx-Elk-client]
+192.168.135.101 ansible_connection=vagrant
